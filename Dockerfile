@@ -45,7 +45,7 @@ RUN set -x && \
     tar xvf data.tar.xz && \
     tar xvf control.tar.xz && \
     popd && \
-    # Deploy 360Radar specific files (Scotland, Northern Ireland and Eire only)
+    # Get the supplied MLAT server & port for (Scotland, Northern Ireland and Eire only)
     grep -m 1 -A 999 'Template: lfw-mlat-client-rx3/server-hostport' /opt/mlat-client-lfw/templates | \
         grep -B 999 -m 1 'Default:' | \
         grep 'Default:' | \
