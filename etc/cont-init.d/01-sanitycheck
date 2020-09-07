@@ -1,0 +1,64 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+NOCOLOR='\033[0m'
+LIGHTRED='\033[1;31m'
+YELLOW='\033[1;33m'
+
+# Check to make sure the correct command line arguments have been set
+EXITCODE=0
+if [ -z "${LAT}" ]; then
+  echo -e "${LIGHTRED}ERROR: LAT environment variable not set${NOCOLOR}"
+  EXITCODE=1
+fi
+if [ -z "${LONG}" ]; then
+  echo -e "${LIGHTRED}ERROR: LONG environment variable not set${NOCOLOR}"
+  EXITCODE=1
+fi
+if [ -z "${ALT}" ]; then
+  echo -e "${LIGHTRED}ERROR: ALT environment variable not set${NOCOLOR}"
+  EXITCODE=1
+fi
+if [ -z "${BEASTHOST}" ]; then
+  echo -e "${LIGHTRED}ERROR: BEASTHOST environment variable not set${NOCOLOR}"
+  EXITCODE=1
+fi
+if [ -z "${BEASTPORT}" ]; then
+  echo -e "${LIGHTRED}ERROR: BEASTPORT environment variable not set${NOCOLOR}"
+  EXITCODE=1
+fi
+case "${REGION,,}" in
+  scotland | northern_ireland | eire)
+    true
+    ;;
+  se_england | sw_england | wales | midlands | northern_england)
+    true
+    ;;
+  *)
+    echo -e "${LIGHTRED}ERROR: REGION environment variable not one of: scotland | northern_ireland | eire | se_england | sw_england | wales | midlands | northern_england${NOCOLOR}"
+    EXITCODE=1
+    ;;
+esac
+
+# Check SITENAME
+if [ -z "${SITENAME}" ]; then
+  echo -e "${LIGHTRED}ERROR: SITENAME environment variable not set${NOCOLOR}"
+  EXITCODE=1
+fi
+# Ensure SITENAME doesn't contain spaces (as-per https://radar.lowflyingwales.co.uk/installing-the-360radar-mlat-client-on-a-raspberry-pi-python-3-7/)
+if echo "${SITENAME}" | grep " ";
+  echo -e "${LIGHTRED}ERROR: SITENAME environment variable must not contain spaces${NOCOLOR}"
+  EXITCODE=1
+fi
+
+# Set up timezone
+if [ -z "${TZ}" ]; then
+  echo -e "${YELLOW}WARNING: TZ environment variable not set${NOCOLOR}"
+else
+  ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+fi
+
+# Bail out on error
+if [ $EXITCODE -ne 0 ]; then
+  exit 1
+fi

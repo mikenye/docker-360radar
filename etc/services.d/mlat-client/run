@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+MLAT_CMD="mlat-client"
+
+MLAT_PARAM=(--user "${SITENAME}")
+MLAT_PARAM+=(--lat "${LAT}")
+MLAT_PARAM+=(--lon "${LONG}")
+MLAT_PARAM+=(--alt "${ALT}")
+MLAT_PARAM+=(--input-type beast)
+MLAT_PARAM+=(--input-connect "${BEASTHOST}:${BEASTPORT}")
+
+case "${REGION,,}" in
+  scotland | northern_ireland | eire)
+    SERVER_HOSTPORT="$(cat /mlat_serverport_lfw)"
+    ;;
+  se_england | sw_england | wales | midlands | northern_england)
+    SERVER_HOSTPORT="$(cat /mlat_serverport_360r)"
+    ;;
+  *)
+    echo "ERROR: REGION environment variable not one of: scotland | northern_ireland | eire | se_england | sw_england | wales | midlands | northern_england"
+    exit 1
+    ;;
+esac
+MLAT_PARAM+=(--server "${SERVER_HOSTPORT}")
+
+set -eo pipefail
+exec "${MLAT_CMD}" "${MLAT_PARAM[@]}" 2>&1 | awk -W interactive '{print "[mlat-client] " $0}'
