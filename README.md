@@ -1,3 +1,9 @@
+# NOTICE
+
+I was requested by the owners of 360radar.co.uk to take this down.
+
+Accordingly, I've removed from docker hub but will leave the container source code here in case anyone feeding 360radar would like to build the container themselves.
+
 # mikenye/360radar
 
 [360Radar.co.uk](https://360radar.co.uk) is a browser-based aircraft tracking system designed to track all ADSB-equipped aircraft stretching across most of England, Wales and Scotland as well as Ireland.
