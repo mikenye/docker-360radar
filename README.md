@@ -97,7 +97,6 @@ There are a series of available environment variables:
 | `REGION`             | Required. One of `eire`, `midlands`, `northern_england`, `northern_ireland`, `scotland`, `se_england`, `sw_england`, `wales` | |
 | `TZ`                 | Optional. Your local timezone                                            | `GMT`     |
 
-
 ## Logging
 
 * All processes are logged to the container's stdout, and can be viewed with `docker logs [-f] container`.
