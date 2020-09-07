@@ -46,7 +46,7 @@ if [ -z "${SITENAME}" ]; then
   EXITCODE=1
 fi
 # Ensure SITENAME doesn't contain spaces (as-per https://radar.lowflyingwales.co.uk/installing-the-360radar-mlat-client-on-a-raspberry-pi-python-3-7/)
-if echo "${SITENAME}" | grep " ";
+if echo "${SITENAME}" | grep " "; then
   echo -e "${LIGHTRED}ERROR: SITENAME environment variable must not contain spaces${NOCOLOR}"
   EXITCODE=1
 fi
